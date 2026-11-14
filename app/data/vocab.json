@@ -1,0 +1,116 @@
+{
+  "institutions": [
+    "Sreenidhi University",
+    "Sreenidhi Institute of Science and Technology",
+    "SNIST",
+    "Osmania University",
+    "JNTU Hyderabad",
+    "BITS Pilani",
+    "IIT Hyderabad",
+    "IIT Madras",
+    "IIT Bombay",
+    "IIIT Hyderabad",
+    "NIT Warangal",
+    "Vellore Institute of Technology",
+    "SRM University",
+    "Manipal University",
+    "Delhi University",
+    "Anna University"
+  ],
+  "degrees_and_education": [
+    "pursuing",
+    "pursuing my degree",
+    "pursuing my PhD",
+    "B.Tech",
+    "M.Tech",
+    "B.E.",
+    "M.E.",
+    "B.Sc",
+    "M.Sc",
+    "BCA",
+    "MCA",
+    "PhD",
+    "Doctorate",
+    "Bachelor of Technology",
+    "Master of Technology",
+    "Undergraduate",
+    "Postgraduate",
+    "Computer Science and Engineering"
+  ],
+  "technical_glossary": [
+    "FastAPI",
+    "Python",
+    "PostgreSQL",
+    "Docker",
+    "Kubernetes",
+    "Alembic",
+    "SQLAlchemy",
+    "Redis",
+    "Celery",
+    "PyTorch",
+    "TensorFlow",
+    "Scikit-learn",
+    "Pandas",
+    "NumPy",
+    "Machine Learning",
+    "Deep Learning",
+    "REST API",
+    "GraphQL",
+    "Microservices",
+    "CI/CD",
+    "Git",
+    "AsyncIO",
+    "Uvicorn",
+    "Pydantic",
+    "WebSockets",
+    "Echo cancellation",
+    "Noise suppression",
+    "Auto gain control",
+    "Speech recognition",
+    "Whisper",
+    "Deepgram"
+  ],
+  "phrase_replacements": [
+    {
+      "pattern": "\\bscreen\\s+(university|institute|college)\\b",
+      "replacement": "Sreenidhi $1",
+      "case_sensitive": false
+    },
+    {
+      "pattern": "\\bfrom\\s+screen\\b",
+      "replacement": "from Sreenidhi",
+      "case_sensitive": false
+    },
+    {
+      "pattern": "\\bposting\\s+with\\s+degrees?\\b",
+      "replacement": "pursuing my degree",
+      "case_sensitive": false
+    },
+    {
+      "pattern": "\\bposting\\s+(my|a|with)\\s+degree\\b",
+      "replacement": "pursuing $1 degree",
+      "case_sensitive": false
+    },
+    {
+      "pattern": "\\bposting\\b(?=\\s+(my|a|degree|phd|btech|mtech))",
+      "replacement": "pursuing",
+      "case_sensitive": false
+    },
+    {
+      "pattern": "\\bI'm\\s+University\\b",
+      "replacement": "from University",
+      "case_sensitive": false
+    }
+  ],
+  "phonetic_name_hints": {
+    "avino": "Abhinav",
+    "abino": "Abhinav",
+    "avinav": "Abhinav",
+    "abhinov": "Abhinav",
+    "dinesh": "Dinesh",
+    "saicharan": "Saicharan",
+    "keerthireddi": "Keerthireddi",
+    "aditya": "Aditya"
+  }
+}
+

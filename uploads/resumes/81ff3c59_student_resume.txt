@@ -1,0 +1,5 @@
+Abhinav Sharma
+Email: abhinav@test.edu
+Skills: Python, FastAPI, Docker, Algorithms
+Education: B.Tech Computer Science
+Experience: Fresher Graduate.

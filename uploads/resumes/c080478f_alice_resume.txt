@@ -1,0 +1,5 @@
+Alice Engineer
+Email: alice@engineer.org
+Education: Bachelor of Science in Computer Science
+Skills: Java, Spring Boot, MySQL, Kubernetes, Docker
+Experience: 4 years of experience as a Backend Software Engineer.

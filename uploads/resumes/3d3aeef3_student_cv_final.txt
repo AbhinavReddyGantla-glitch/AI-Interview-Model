@@ -1,0 +1,5 @@
+Candidate Name: Rohit Verma
+Email: rohit.verma@college.edu
+Skills: Python, FastAPI, SQL, Cloud
+Education: B.Tech Computer Science
+Experience: 1 year intern backend developer.

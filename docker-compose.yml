@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: aidatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/aidatabase
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS:-}
+      GOOGLE_SPEECH_LANGUAGE_CODE: ${GOOGLE_SPEECH_LANGUAGE_CODE:-en-IN}
+      GOOGLE_SPEECH_MODEL: ${GOOGLE_SPEECH_MODEL:-latest_long}
+      EXTERNAL_EVALUATION_URL: ${EXTERNAL_EVALUATION_URL:-http://localhost:8000/api/v1/evaluation}
+      API_KEY: ${API_KEY:-}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:8000}
+      DEEPGRAM_API_KEY: ${DEEPGRAM_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      STT_ENGINE: ${STT_ENGINE:-whisper}
+      WHISPER_MODEL: ${WHISPER_MODEL:-base}
+      WHISPER_DEVICE: ${WHISPER_DEVICE:-cpu}
+      WHISPER_COMPUTE_TYPE: ${WHISPER_COMPUTE_TYPE:-int8}
+      ENABLE_LLM_TRANSCRIPT_CORRECTION: ${ENABLE_LLM_TRANSCRIPT_CORRECTION:-false}
+    volumes:
+      - whisper_cache:/root/.cache/huggingface
+      - resume_uploads:/app/uploads/resumes
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  pgdata:
+  whisper_cache:
+  resume_uploads:

@@ -1,0 +1,5 @@
+Abhinav Sharma
+Email: abhinav@example.com
+Skills: Python, FastAPI, Docker, SQL
+Education: B.Tech Computer Science
+Experience: 2 years building backend APIs.

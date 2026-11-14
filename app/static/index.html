@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview Assessment Portal</title>
+    <meta name="description" content="AI Technical Interview Evaluation Platform tailored for college students and freshers, with live voice lip-sync, smart proctoring, and instant Gemini evaluation.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="/static/style.css?v=2.5.0">
+</head>
+<body>
+    <div class="portal-root">
+        <!-- Overlay backdrop for sidebar drawer -->
+        <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+        <!-- Left Navigation Rail (Appears on click, disappears on repeat click) -->
+        <aside class="portal-sidebar" id="portal-sidebar">
+            <div class="sidebar-top">
+                <div class="saarthak-brand-wrapper">
+                    <a href="/" class="saarthak-logo-card" title="Saarthak AI Assessment Portal">
+                        <img src="/static/saarthak-logo.png" alt="Saarthak" class="saarthak-logo-img" onerror="this.src='https://saarthak.net/wp-content/uploads/2026/03/Saarthak417x181-1.png'">
+                    </a>
+                </div>
+                <button class="sidebar-toggle-btn" id="sidebar-toggle" title="Close Sidebar (Esc)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <!-- 1. Dashboard -->
+                <a href="#dashboard" class="nav-item" data-nav="dashboard" title="Dashboard (:3000)" data-tooltip="Dashboard (:3000)">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="nav-label">Dashboard</span>
+                    <span class="nav-port-badge port-cyan" id="port-badge-dashboard">:3000</span>
+                </a>
+                
+                <!-- 2. My Profile -->
+                <a href="#profile" class="nav-item" data-nav="profile" title="My Profile (:5173)" data-tooltip="My Profile (:5173)">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="nav-label">My Profile</span>
+                    <span class="nav-port-badge port-amber" id="port-badge-profile">:5173</span>
+                </a>
+
+                <!-- 3. Assessments (Active / Current Portal) -->
+                <a href="/" class="nav-item active" data-nav="assessments" title="Assessments (:8000)" data-tooltip="Assessments (:8000)">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span class="nav-label">Assessments</span>
+                    <span class="nav-port-badge port-green" id="port-badge-assessments">:8000</span>
+                </a>
+
+                <!-- 4. Career Choice -->
+                <a href="#career" class="nav-item" data-nav="career" title="Career Choice (:8080)" data-tooltip="Career Choice (:8080)">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span class="nav-label">Career Choice</span>
+                    <span class="nav-port-badge port-blue" id="port-badge-career">:8080</span>
+                </a>
+
+                <!-- 5. Attendance -->
+                <a href="#attendance" class="nav-item" data-nav="attendance" title="Attendance (:4200)" data-tooltip="Attendance (:4200)">
+                    <i class="fa-regular fa-window-restore"></i>
+                    <span class="nav-label">Attendance</span>
+                    <span class="nav-port-badge port-purple" id="port-badge-attendance">:4200</span>
+                </a>
+
+                <!-- 6. Logout -->
+                <a href="#logout" class="nav-item nav-item-logout" data-nav="logout" title="Logout (:9000)" data-tooltip="Logout (:9000)">
+                    <i class="fa-solid fa-person-running"></i>
+                    <span class="nav-label">Logout</span>
+                    <span class="nav-port-badge port-rose" id="port-badge-logout">:9000</span>
+                </a>
+            </nav>
+
+            <!-- Bottom Left Ports & HTTPS URL Space Button -->
+            <div class="sidebar-bottom">
+                <button class="endpoint-space-btn" id="endpoint-space-trigger" title="Open Ports & HTTPS URL Space">
+                    <div class="endpoint-space-icon-wrap">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+                    <div class="endpoint-space-meta">
+                        <span class="space-title">Ports &amp; URLs</span>
+                        <span class="space-protocol-tag" id="sidebar-protocol-tag">HTTP :8000</span>
+                    </div>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="portal-body">
+            <!-- Top Purple Header Bar -->
+            <header class="portal-header">
+                <div class="header-left">
+                    <button class="header-menu-btn" id="header-menu-btn" title="Toggle Navigation Sidebar">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <button class="mobile-menu-btn" id="mobile-menu-btn" style="display:none;"></button>
+                    <div class="portal-brand-pill">
+                        <span class="portal-brand-title">AI Interview Assessment Portal</span>
+                        <span class="portal-brand-tag">Campus Edition</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="proctor-live-status hidden" id="header-proctor-status">
+                        <span class="proctor-shield-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                        <span class="proctor-live-text">Proctoring: <strong id="header-integrity-score">100%</strong></span>
+                    </div>
+                    <div class="status-indicator">
+                        <span class="status-dot green"></span>
+                        <span class="status-label">Aria Online</span>
+                    </div>
+                    <div class="user-profile-badge" id="user-profile-badge">
+                        <div class="user-avatar-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <span class="user-name-text" id="header-user-name">Candidate</span>
+                    </div>
+                    <!-- End Interview Button at Top Right -->
+                    <button id="end-interview-btn" class="end-interview-btn hidden" title="End Interview and view evaluation report">
+                        <i class="fa-solid fa-phone-slash"></i>
+                        <span>End Interview</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Portal Workspace -->
+            <main class="portal-workspace">
+
+                <!-- ═══════════════════════════════════════ -->
+                <!--  SCREEN 1: Resume Input & Setup Page     -->
+                <!-- ═══════════════════════════════════════ -->
+                <section id="welcome-screen" class="workspace-screen active">
+
+                    <!-- Top Dark Welcome Banner Card -->
+                    <div class="dashboard-banner-card">
+                        <div class="banner-content">
+                            <h1 class="banner-title">AI Technical Interview Assessment <span class="wave-emoji">🚀</span></h1>
+                            <p class="banner-subtitle">Upload your resume to begin a personalized voice and video mock interview with Aria.</p>
+                        </div>
+                        <div class="banner-date-pill">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span id="banner-date-text">Friday, Sep 04, 2026</span>
+                        </div>
+                    </div>
+
+                    <!-- 2-Column Setup: Resume Taker (Left) & Aria AI Interviewer (Right) -->
+                    <div class="welcome-setup-grid">
+
+                        <!-- Left: Main Resume Input Taker Card -->
+                        <div class="portal-card resume-input-card">
+                            <div class="card-header-row">
+                                <div class="card-title-wrap">
+                                    <div class="circle-badge purple-badge">
+                                        <i class="fa-solid fa-file-arrow-up"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="card-title">Resume &amp; Role Setup</h3>
+                                        <p class="card-subtitle-text">Aria will tailor the questions based on your background and skills</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Job Role Selection -->
+                            <div class="role-select-row">
+                                <label for="job-role-select"><i class="fa-solid fa-briefcase"></i> Target Engineering Role / Track</label>
+                                <select id="job-role-select">
+                                    <option value="">Auto-detect from resume</option>
+                                    <option value="Software Engineer">Software Engineer (Fresher / Campus)</option>
+                                    <option value="Backend Engineer">Backend Engineer (Java / Python / Node)</option>
+                                    <option value="Frontend Engineer">Frontend Engineer (React / JavaScript)</option>
+                                    <option value="Fullstack Engineer">Fullstack Engineer</option>
+                                    <option value="Data Scientist">Data Science / ML Trainee</option>
+                                    <option value="DevOps Engineer">DevOps &amp; Cloud Trainee</option>
+                                </select>
+                            </div>
+
+                            <!-- Single, Bulletproof Resume Drop & Click Zone -->
+                            <div class="upload-zone" id="upload-zone" style="position: relative; cursor: pointer; text-align: center; padding: 2rem 1.2rem; border: 2px dashed #8b5cf6; border-radius: 16px; background: rgba(139, 92, 246, 0.04); transition: all 0.2s ease;">
+                                <!-- Transparent full-coverage native file input: any click on the zone physically strikes the native input directly -->
+                                <input type="file" id="resume-file-input" accept=".pdf,.docx,.doc,.txt,.rtf,.odt,.jpg,.jpeg,.png,.webp" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10;" title="Click or drop resume file here">
+                                <div class="upload-zone-content" style="pointer-events: none;">
+                                    <div class="upload-icon-wrap" style="width: 54px; height: 54px; border-radius: 50%; background: #ede9fe; color: #8b5cf6; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 0.75rem;">
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </div>
+                                    <h3 style="margin: 0 0 0.3rem; font-size: 1.1rem; color: #f8fafc; font-weight: 700;">Click to Browse or Drop Resume</h3>
+                                    <p style="margin: 0 0 0.75rem; color: #94a3b8; font-size: 0.88rem;">Supports PDF, DOCX, TXT (Max 5 MB) • Instant AI Extraction</p>
+                                    <span class="btn primary-btn" style="padding: 0.5rem 1.3rem; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 0.5rem; pointer-events: none;">
+                                        <i class="fa-solid fa-folder-open"></i> Choose Resume File
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Visible Native File Chooser (100% Reliable Native Browser Control) -->
+                            <div id="direct-file-wrap" style="margin-top: 0.75rem; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;">
+                                <span style="font-size: 0.82rem; color: #94a3b8; white-space: nowrap;"><i class="fa-solid fa-paperclip"></i> Direct File Picker:</span>
+                                <input type="file" id="resume-direct-input" accept=".pdf,.docx,.doc,.txt,.rtf,.odt,.jpg,.jpeg,.png,.webp" style="font-size: 0.82rem; color: #cbd5e1; cursor: pointer; width: 100%;">
+                            </div>
+
+                            <!-- Manual Details Fallback Option -->
+                            <div style="text-align: center; margin-top: 0.6rem;" id="manual-toggle-wrap">
+                                <button type="button" class="btn-link" id="toggle-manual-entry-btn" style="background: none; border: none; color: var(--primary-purple, #8b5cf6); text-decoration: underline; font-size: 0.82rem; cursor: pointer;">
+                                    <i class="fa-solid fa-pen-to-square"></i> Or enter candidate details manually
+                                </button>
+                            </div>
+
+                            <!-- Manual Entry Card -->
+                            <div class="manual-entry-card hidden" id="manual-entry-card" style="margin-top: 0.75rem; padding: 1rem; border-radius: 12px; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.1);">
+                                <h4 style="margin: 0 0 0.6rem; font-size: 0.9rem; color: #f8fafc;"><i class="fa-solid fa-id-card"></i> Candidate Details</h4>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.6rem;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.2rem;">Full Name *</label>
+                                        <input type="text" id="manual-name-input" placeholder="e.g. Abhinav Candidate" style="width: 100%; padding: 0.45rem; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #f8fafc; font-size: 0.82rem;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.2rem;">Email Address *</label>
+                                        <input type="email" id="manual-email-input" placeholder="e.g. candidate@example.com" style="width: 100%; padding: 0.45rem; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #f8fafc; font-size: 0.82rem;">
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 0.6rem;">
+                                    <label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.2rem;">Key Skills (comma-separated)</label>
+                                    <input type="text" id="manual-skills-input" placeholder="e.g. Python, FastAPI, PostgreSQL, Docker" style="width: 100%; padding: 0.45rem; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #f8fafc; font-size: 0.82rem;">
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                                    <button type="button" class="btn secondary-btn" id="cancel-manual-btn" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;">Cancel</button>
+                                    <button type="button" class="btn primary-btn" id="save-manual-btn" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">Use These Details</button>
+                                </div>
+                            </div>
+
+                            <!-- Upload Progress Indicator -->
+                            <div class="upload-progress-row hidden" id="upload-progress-row" style="margin: 0.8rem 0;">
+                                <div class="upload-progress-bar">
+                                    <div class="upload-progress-fill" id="upload-progress-fill"></div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.3rem;">
+                                    <span id="upload-progress-text" style="font-size: 0.85rem; color: #94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Uploading &amp; analyzing resume...</span>
+                                </div>
+                            </div>
+
+                            <!-- Error Banner (Positioned prominently right after the upload controls) -->
+                            <div class="error-banner hidden" id="upload-error-banner" style="margin: 0.8rem 0; padding: 0.75rem 1rem; border-radius: 8px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; display: flex; align-items: center; gap: 0.6rem;">
+                                <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.1rem; color: #ef4444;"></i>
+                                <span id="upload-error-text" style="font-size: 0.85rem;">An error occurred.</span>
+                            </div>
+
+                            <!-- Parsed Resume Preview -->
+                            <div class="resume-preview hidden" id="resume-preview">
+                                <div class="preview-header">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <i class="fa-solid fa-circle-check text-green"></i>
+                                        <span>Resume Analyzed Successfully</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <span class="preview-filename-badge" id="preview-filename" style="font-size: 0.78rem; background: rgba(255,255,255,0.08); padding: 0.2rem 0.5rem; border-radius: 4px; color: var(--text-secondary);"></span>
+                                        <button class="re-upload-btn" id="re-upload-btn" title="Upload a different resume"><i class="fa-solid fa-arrow-rotate-left"></i> Replace Resume</button>
+                                    </div>
+                                </div>
+                                <div class="preview-body">
+                                    <div class="preview-field">
+                                        <span class="preview-label"><i class="fa-solid fa-user"></i> Candidate Name</span>
+                                        <span class="preview-value" id="preview-name">—</span>
+                                    </div>
+                                    <div class="preview-field">
+                                        <span class="preview-label"><i class="fa-solid fa-briefcase"></i> Target Role</span>
+                                        <span class="preview-value" id="preview-role">—</span>
+                                    </div>
+                                    <div class="preview-field">
+                                        <span class="preview-label"><i class="fa-solid fa-clock"></i> Experience</span>
+                                        <span class="preview-value" id="preview-exp">—</span>
+                                    </div>
+                                    <div class="preview-field">
+                                        <span class="preview-label"><i class="fa-solid fa-graduation-cap"></i> Education</span>
+                                        <span class="preview-value" id="preview-education">—</span>
+                                    </div>
+                                    <div class="preview-field full-row">
+                                        <span class="preview-label"><i class="fa-solid fa-tags"></i> Core Technical Skills</span>
+                                        <div class="skills-chips" id="preview-skills"></div>
+                                    </div>
+                                    <div class="preview-field full-row" id="preview-snippet-wrap" style="margin-top: 0.25rem;">
+                                        <span class="preview-label"><i class="fa-solid fa-file-lines"></i> Extracted Resume Snippet</span>
+                                        <p class="preview-snippet-text" id="preview-snippet-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; margin: 0.2rem 0 0; background: rgba(0,0,0,0.15); padding: 0.5rem; border-radius: 6px; max-height: 70px; overflow-y: auto;"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- NOTE: The browser's native microphone permission prompt and tab recording indicator cannot be programmatically hidden (OS/browser security boundary). -->
+                            <!-- Audio & Mic Device Setup Card (Debug Only: visible when ?debug=1 or VITE_DEBUG_MIC=true) -->
+                            <div class="glass-card mic-setup-card mic-debug-only" id="mic-setup-card" style="margin-top: 1rem; margin-bottom: 1rem; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(30, 41, 59, 0.5);">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                                    <h4 style="margin:0; font-size:0.95rem; display:flex; align-items:center; gap:0.5rem; color:#f8fafc;">
+                                        <i class="fa-solid fa-microphone-lines" style="color:var(--accent-cyan, #06b6d4);"></i> Audio &amp; Microphone Setup <span style="font-size:0.7rem; color:#f59e0b; font-weight:normal;">[Debug Mode]</span>
+                                    </h4>
+                                    <span class="badge" id="browser-support-badge" style="font-size:0.75rem; background:#10b98122; color:#10b981; border:1px solid #10b98144; padding:0.2rem 0.5rem; border-radius:4px;">
+                                        <i class="fa-solid fa-circle-check"></i> Speech API Ready
+                                    </span>
+                                </div>
+
+                                <!-- Unsupported browser guidance -->
+                                <div id="unsupported-browser-banner" class="hidden" style="background:#fef3c7; color:#92400e; padding:0.5rem 0.75rem; border-radius:6px; font-size:0.8rem; margin-bottom:0.75rem;">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> <strong>Browser recommendation:</strong> Google Chrome or Microsoft Edge is recommended for speech-to-text accuracy and live lip-sync.
+                                </div>
+
+                                <!-- Device Selector -->
+                                <div style="margin-bottom:0.75rem;">
+                                    <label for="mic-device-select" style="display:block; font-size:0.8rem; color:#94a3b8; margin-bottom:0.25rem;">
+                                        <i class="fa-solid fa-sliders"></i> Input Device:
+                                    </label>
+                                    <select id="mic-device-select" style="width:100%; padding:0.45rem 0.6rem; background:#0f172a; color:#f8fafc; border:1px solid #334155; border-radius:6px; font-size:0.85rem;">
+                                        <option value="">Default Microphone</option>
+                                    </select>
+                                </div>
+
+                                <!-- Live Mic Level Meter & Test Button -->
+                                <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+                                    <button type="button" id="test-mic-btn" class="btn secondary-btn" style="padding:0.4rem 0.8rem; font-size:0.8rem; border-radius:6px; white-space:nowrap; cursor:pointer;">
+                                        <i class="fa-solid fa-volume-high"></i> <span id="test-mic-label">Test Microphone</span>
+                                    </button>
+                                    <div style="flex:1; background:#0f172a; height:18px; border-radius:9px; overflow:hidden; border:1px solid #334155; position:relative;">
+                                        <div id="mic-meter-bar" style="width:0%; height:100%; background:linear-gradient(90deg, #10b981, #eab308, #ef4444); transition:width 0.05s linear; border-radius:9px;"></div>
+                                    </div>
+                                    <span id="mic-volume-num" style="font-size:0.75rem; color:#94a3b8; min-width:32px; text-align:right;">0%</span>
+                                </div>
+                                <div id="mic-test-feedback" style="font-size:0.8rem; color:#94a3b8; display:flex; align-items:center; gap:0.35rem; min-height:1.2rem;">
+                                    <i class="fa-solid fa-circle-info"></i> Click "Test Microphone" and speak to check your input volume.
+                                </div>
+                            </div>
+
+                            <!-- Start Button -->
+                            <button id="start-interview-btn" class="btn primary-btn btn-glow full-width" disabled>
+                                <i class="fa-solid fa-play"></i>
+                                <span>Begin Live Interview with Aria</span>
+                            </button>
+                            <p class="start-hint" id="start-hint">Upload your resume to unlock your personalized session</p>
+                        </div>
+
+                        <!-- Right: Aria AI Interviewer & Assessment Structure -->
+                        <div class="welcome-sidebar-panel">
+                            <!-- Aria Live Character Card -->
+                            <div class="portal-card interviewer-spotlight-card">
+                                <div class="aria-spotlight-inner">
+                                    <div class="avatar-preview-wrap">
+                                        <div class="avatar-glow-bg"></div>
+                                        <div class="emoji-avatar-character" id="preview-emoji-avatar">
+                                            <div class="emoji-face">
+                                                <div class="emoji-shine"></div>
+                                                <div class="emoji-eyes">
+                                                    <div class="emoji-eye left-eye">
+                                                        <div class="eye-pupil"></div>
+                                                        <div class="eye-sparkle"></div>
+                                                    </div>
+                                                    <div class="emoji-eye right-eye">
+                                                        <div class="eye-pupil"></div>
+                                                        <div class="eye-sparkle"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="emoji-blush left-blush"></div>
+                                                <div class="emoji-blush right-blush"></div>
+                                                <div class="emoji-mouth mouth-smile" id="preview-emoji-mouth">
+                                                    <div class="mouth-tongue"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="spotlight-title">Aria 😊</div>
+                                    <div class="spotlight-subtitle">AI Interviewer with Live Lip-Sync</div>
+                                </div>
+
+                                <div class="interview-flow-list">
+                                    <div class="flow-item">
+                                        <div class="flow-num-badge">1</div>
+                                        <div class="flow-text">
+                                            <strong>Self-Introduction First</strong>
+                                            <span>Starts with *"Tell me about yourself &amp; your background"*</span>
+                                        </div>
+                                    </div>
+                                    <div class="flow-item">
+                                        <div class="flow-num-badge">2</div>
+                                        <div class="flow-text">
+                                            <strong>Compact Fresher Questions</strong>
+                                            <span>Core OOP, basic DSA, SQL queries &amp; academic projects</span>
+                                        </div>
+                                    </div>
+                                    <div class="flow-item">
+                                        <div class="flow-num-badge">3</div>
+                                        <div class="flow-text">
+                                            <strong>Voice &amp; Focus Guard</strong>
+                                            <span>Speak naturally with live proctoring &amp; instant scoring</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+            <!-- ════════════════════════════════════ -->
+            <!--  SCREEN 2: Avatar Interview Screen  -->
+            <!-- ════════════════════════════════════ -->
+            <section id="interview-screen" class="workspace-screen">
+                <div class="interview-layout">
+
+                    <!-- Left: Smiling Emoji AI Avatar with Lip-Sync -->
+                    <aside class="avatar-sidebar">
+                        <div class="glass-card avatar-card avatar-card-compact" id="avatar-card">
+                            <div class="avatar-state-badge" id="avatar-state-badge">
+                                <span class="state-dot"></span>
+                                <span id="avatar-state-label">Ready</span>
+                            </div>
+                            <div class="avatar-stage avatar-stage-compact">
+                                <div class="avatar-ambient-glow" id="avatar-ambient-glow"></div>
+                                <div class="emoji-avatar-character" id="avatar-emoji">
+                                    <div class="emoji-face">
+                                        <div class="emoji-shine"></div>
+                                        <div class="emoji-eyes">
+                                            <div class="emoji-eye left-eye">
+                                                <div class="eye-pupil"></div>
+                                                <div class="eye-sparkle"></div>
+                                            </div>
+                                            <div class="emoji-eye right-eye">
+                                                <div class="eye-pupil"></div>
+                                                <div class="eye-sparkle"></div>
+                                            </div>
+                                        </div>
+                                        <div class="emoji-blush left-blush"></div>
+                                        <div class="emoji-blush right-blush"></div>
+                                        <!-- Animated Lip-sync Mouth -->
+                                        <div class="emoji-mouth mouth-smile" id="avatar-mouth">
+                                            <div class="mouth-inner-lips" id="mouth-inner"></div>
+                                            <div class="mouth-tongue"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="audio-soundwaves" id="audio-soundwaves">
+                                    <span class="soundwave-bar"></span>
+                                    <span class="soundwave-bar"></span>
+                                    <span class="soundwave-bar"></span>
+                                    <span class="soundwave-bar"></span>
+                                    <span class="soundwave-bar"></span>
+                                </div>
+                            </div>
+                            <div class="speech-bubble hidden" id="speech-bubble">
+                                <p id="speech-bubble-text">...</p>
+                            </div>
+                            <div class="aria-name-tag">
+                                <span>Aria 😊</span>
+                                <span class="aria-title-tag">AI Interviewer</span>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Center: Prominent Video Feed & Live Proctoring HUD -->
+                    <div class="video-main-panel">
+                        <div class="glass-card video-stage-card">
+                            <div class="video-stage-header">
+                                <span class="badge live-badge"><i class="fa-solid fa-video"></i> LIVE</span>
+                                <span class="badge proctor-shield-badge" id="proctor-shield-badge">
+                                    <i class="fa-solid fa-shield-halved text-green"></i> Focus Guard Active
+                                </span>
+                                <span class="interview-clock" id="interview-clock">00:00 / 10:00</span>
+                                <span class="badge dynamic-time-badge hidden" id="dynamic-time-badge"><i class="fa-solid fa-bolt"></i> Dynamic Time +0m</span>
+                                <span class="camera-recording-badge" id="camera-recording-badge"><i class="fa-solid fa-circle"></i> Camera Active</span>
+                            </div>
+                            <div class="video-stage">
+                                <video id="candidate-video-preview" autoplay muted playsinline></video>
+                                <div class="candidate-video-overlay" id="candidate-video-status">
+                                    <i class="fa-solid fa-video"></i>
+                                    <span>Starting your camera...</span>
+                                </div>
+
+                                <!-- Live Real-Time Proctoring HUD -->
+                                <div class="proctoring-hud-bar" id="proctoring-hud-bar">
+                                    <div class="hud-item" id="hud-face-status">
+                                        <span class="hud-dot green"></span>
+                                        <i class="fa-solid fa-user-check"></i>
+                                        <span class="hud-label">Face In View</span>
+                                    </div>
+                                    <div class="hud-item" id="hud-tab-status">
+                                        <span class="hud-dot green"></span>
+                                        <i class="fa-solid fa-lock"></i>
+                                        <span class="hud-label">Tab Focused</span>
+                                    </div>
+                                    <div class="hud-item" id="hud-integrity-status">
+                                        <i class="fa-solid fa-shield-check text-cyan"></i>
+                                        <span class="hud-label">Integrity: <strong id="live-integrity-pct">100%</strong></span>
+                                    </div>
+                                </div>
+
+                                <!-- Floating Proctoring Warning Banner -->
+                                <div class="proctor-warning-banner hidden" id="proctor-warning-banner">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    <span id="proctor-warning-text">Tab switch detected! Infraction logged.</span>
+                                </div>
+
+                                <div class="video-frame-border"></div>
+                            </div>
+                            <div class="video-stage-footer">
+                                <div class="interview-progress video-progress">
+                                    <div class="progress-track">
+                                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="progress-label" id="question-order">Question 1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Proctoring Diagnostics & Audit Trail -->
+                        <div class="glass-card proctor-debug-card" id="proctor-debug-card">
+                            <div class="proctor-debug-header" id="proctor-debug-header">
+                                <div class="proctor-debug-title">
+                                    <i class="fa-solid fa-shield-halved text-cyan"></i>
+                                    <span>Proctoring Audit &amp; False-Positive Diagnostics</span>
+                                    <span class="proctor-debug-badge" id="proctor-debug-count">0 events</span>
+                                </div>
+                                <button type="button" class="proctor-debug-toggle-btn" id="proctor-debug-toggle-btn" title="Toggle Proctoring Log">
+                                    <i class="fa-solid fa-chevron-down" id="proctor-debug-chevron"></i>
+                                </button>
+                            </div>
+                            <div class="proctor-debug-content hidden" id="proctor-debug-content">
+                                <div class="proctor-pipeline-hint">
+                                    <span class="pipeline-step">Event</span> <i class="fa-solid fa-arrow-right"></i>
+                                    <span class="pipeline-step">Confidence</span> <i class="fa-solid fa-arrow-right"></i>
+                                    <span class="pipeline-step">Duration</span> <i class="fa-solid fa-arrow-right"></i>
+                                    <span class="pipeline-step">Severity</span> <i class="fa-solid fa-arrow-right"></i>
+                                    <span class="pipeline-step">Score Impact</span>
+                                </div>
+                                <div class="proctor-debug-table-wrap">
+                                    <table class="proctor-debug-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Event</th>
+                                                <th>Conf</th>
+                                                <th>Duration</th>
+                                                <th>Severity</th>
+                                                <th>Penalty</th>
+                                                <th>Reason / Tolerance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="proctor-debug-tbody">
+                                            <tr class="empty-row" id="proctor-debug-empty-row">
+                                                <td colspan="7" style="text-align:center; color:#64748b; padding:0.8rem;">No infractions detected. Natural movements (blinking, minor gaze shifts, natural head movement) tolerated without penalty.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Question + Mic Controls -->
+                    <div class="response-panel">
+                        <div class="glass-card question-card">
+                            <div class="question-meta">
+                                <span class="badge category-badge" id="question-category">
+                                    <i class="fa-solid fa-folder-open"></i> Category
+                                </span>
+                                <span class="badge difficulty-badge" id="question-difficulty">Medium</span>
+                            </div>
+                            <h2 class="question-text" id="question-text">Loading randomized question...</h2>
+                            <button class="replay-btn" id="replay-tts-btn" title="Hear question again with Aria lip-sync">
+                                <i class="fa-solid fa-volume-high"></i> Replay Question
+                            </button>
+                        </div>
+
+                        <div class="glass-card mic-card">
+                            <div class="mic-card-header">
+                                <h3><i class="fa-solid fa-pen-to-square" style="color:var(--accent-cyan, #06b6d4);"></i> Your Answer</h3>
+                                <span class="recording-timer mic-debug-only hidden" id="recording-timer">
+                                    <i class="fa-solid fa-circle rec-dot"></i> <span id="timer-text">00:00</span>
+                                </span>
+                            </div>
+
+                            <!-- Waveform Visualizer (Debug Only) -->
+                            <div class="waveform-container mic-debug-only" id="waveform-container">
+                                <div class="waveform-bar"></div><div class="waveform-bar"></div>
+                                <div class="waveform-bar"></div><div class="waveform-bar"></div>
+                                <div class="waveform-bar"></div><div class="waveform-bar"></div>
+                                <div class="waveform-bar"></div><div class="waveform-bar"></div>
+                                <div class="waveform-bar"></div><div class="waveform-bar"></div>
+                                <div class="waveform-bar"></div><div class="waveform-bar"></div>
+                            </div>
+
+                            <!-- Interview Language Selector (Debug Only) -->
+                            <label class="transcript-language mic-debug-only" for="speech-language">
+                                <i class="fa-solid fa-language"></i> Interview language
+                                <select id="speech-language">
+                                    <option value="en-IN" selected>English (India)</option>
+                                    <option value="en-US">English (US)</option>
+                                    <option value="en-GB">English (UK)</option>
+                                </select>
+                            </label>
+
+                            <!-- Single Source of Truth Answer Transcript Box -->
+                            <div class="transcript-container" id="transcript-container">
+                                <p class="transcript-placeholder" id="transcript-placeholder">
+                                    <i class="fa-solid fa-microphone"></i>
+                                    Speak your answer into your microphone, or type here directly...
+                                </p>
+                                <div class="transcript-text" id="transcript-text" contenteditable="true" role="textbox" aria-label="Answer transcript"></div>
+                            </div>
+                            <p class="transcript-help"><i class="fa-solid fa-magic-wand-sparkles"></i> Speak naturally or type your answer. You can review and edit before submitting.</p>
+
+                            <div class="stt-warning hidden" id="stt-warning">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                Speech recognition not supported. Please use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.
+                            </div>
+
+                            <!-- Microphone Controls Zone (Debug Only: visible when ?debug=1 or VITE_DEBUG_MIC=true) -->
+                            <div class="mic-zone mic-debug-only" id="mic-zone">
+                                <div class="mic-btn-wrap">
+                                    <div class="mic-pulse-ring" id="mic-pulse-ring"></div>
+                                    <button class="mic-btn" id="mic-btn" title="Microphone OFF — click to record" aria-label="Microphone off — click to start">
+                                        <i class="fa-solid fa-microphone" id="mic-icon"></i>
+                                    </button>
+                                </div>
+                                <div class="mic-controls-row" style="display:flex; align-items:center; gap:0.75rem; margin-top:0.4rem;">
+                                    <button type="button" class="btn secondary-btn hidden" id="stop-btn" style="padding:0.35rem 0.75rem; font-size:0.8rem; background:#fee2e2; color:#ef4444; border:1px solid #fca5a5; border-radius:6px; cursor:pointer;" title="Stop recording audio">
+                                        <i class="fa-solid fa-circle-stop"></i> Stop Recording
+                                    </button>
+                                    <span class="mic-status-badge" id="mic-status-badge" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.75rem; font-weight:600; color:#64748b;">
+                                        <span class="mic-status-dot" id="mic-status-dot" style="width:8px; height:8px; border-radius:50%; background:#94a3b8; display:inline-block;"></span>
+                                        <span id="mic-status-label">Mic: OFF</span>
+                                    </span>
+                                </div>
+                                <p class="mic-instruction" id="mic-instruction">Click to start speaking</p>
+                            </div>
+
+                            <div class="answer-actions">
+                                <button id="submit-answer-btn" class="btn primary-btn btn-glow full-width" disabled>
+                                    <span>Submit Answer</span> <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                                <div class="submit-error-banner hidden" id="submit-error-banner" style="margin-top:0.75rem; padding:0.75rem 1rem; border-radius:8px; background:#fef2f2; border:1px solid #fecaca; color:#991b1b; display:none; align-items:center; justify-content:space-between; gap:0.75rem; font-size:0.875rem;">
+                                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                                        <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i>
+                                        <span id="submit-error-message">Could not submit your answer, please try again.</span>
+                                    </div>
+                                    <button type="button" id="retry-submit-btn" class="btn secondary-btn" style="padding:0.35rem 0.85rem; font-size:0.8rem; background:#fee2e2; border-color:#fca5a5; color:#991b1b; cursor:pointer;">
+                                        <i class="fa-solid fa-rotate-right"></i> Retry
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ════════════════════════════════════════ -->
+            <!--  SCREEN 3: Final Evaluation Report      -->
+            <!-- ════════════════════════════════════════ -->
+            <section id="report-screen" class="workspace-screen">
+                <div class="report-container">
+                    <div class="glass-card report-header-card">
+                        <div class="report-title-grid">
+                            <div>
+                                <h2>Evaluation Completed 🎉</h2>
+                                <p class="candidate-meta">Candidate: <strong id="report-candidate-name">—</strong> | Role: <span id="report-candidate-role">—</span></p>
+                            </div>
+                            <div class="report-badge-container">
+                                <span class="badge date-badge" id="report-date">—</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-metrics-grid">
+                        <div class="glass-card scores-breakdown-card">
+                            <h3>Performance Breakdown</h3>
+                            <div class="score-rings-container">
+                                <div class="score-ring-box">
+                                    <div class="circular-progress" id="ring-overall" style="background: conic-gradient(var(--accent-purple) 0deg, var(--card-bg) 0deg);">
+                                        <div class="inner-value" id="val-overall">0%</div>
+                                    </div>
+                                    <span class="score-label">Overall Match</span>
+                                </div>
+                                <div class="score-ring-box">
+                                    <div class="circular-progress" id="ring-technical" style="background: conic-gradient(var(--accent-cyan) 0deg, var(--card-bg) 0deg);">
+                                        <div class="inner-value" id="val-technical">0%</div>
+                                    </div>
+                                    <span class="score-label">Technical Score</span>
+                                </div>
+                                <div class="score-ring-box">
+                                    <div class="circular-progress" id="ring-communication" style="background: conic-gradient(var(--accent-pink) 0deg, var(--card-bg) 0deg);">
+                                        <div class="inner-value" id="val-communication">0%</div>
+                                    </div>
+                                    <span class="score-label">Communication</span>
+                                </div>
+                                <div class="score-ring-box">
+                                    <div class="circular-progress" id="ring-integrity" style="background: conic-gradient(var(--success) 0deg, var(--card-bg) 0deg);">
+                                        <div class="inner-value" id="val-integrity">100%</div>
+                                    </div>
+                                    <span class="score-label">Proctoring Trust</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card recommendation-card">
+                            <h3><i class="fa-solid fa-clipboard-check"></i> Hiring Recommendation</h3>
+                            <div class="recommendation-content" id="report-recommendation">Loading recommendation summary...</div>
+                            <div class="proctor-summary-badge" id="report-proctor-verdict">
+                                <i class="fa-solid fa-shield-check text-green"></i> <span id="report-proctor-text">Proctoring integrity verified.</span>
+                            </div>
+                            <div class="report-proctor-events-box hidden" id="report-proctor-events-box">
+                                <div style="font-weight:700; color:#38bdf8; margin-bottom:0.35rem;">
+                                    <i class="fa-solid fa-list-check"></i> Proctoring Event Audit Log:
+                                </div>
+                                <ul id="report-proctor-events-list" style="margin:0 0 0 1rem; padding:0;"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-details-grid">
+                        <div class="glass-card strengths-card">
+                            <h3><i class="fa-solid fa-circle-check text-green"></i> Key Strengths</h3>
+                            <ul class="bullet-list" id="report-strengths"></ul>
+                        </div>
+                        <div class="glass-card weaknesses-card">
+                            <h3><i class="fa-solid fa-circle-exclamation text-pink"></i> Areas of Improvement</h3>
+                            <ul class="bullet-list" id="report-weaknesses"></ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card roadmap-card">
+                        <h3><i class="fa-solid fa-map-location-dot"></i> Personalized Upskilling Roadmap</h3>
+                        <div class="roadmap-grid">
+                            <div class="roadmap-phase">
+                                <h4 class="phase-title short-term-title"><i class="fa-solid fa-bolt"></i> Short-Term (Immediate focus)</h4>
+                                <ul class="roadmap-list" id="roadmap-short"></ul>
+                            </div>
+                            <div class="roadmap-phase">
+                                <h4 class="phase-title long-term-title"><i class="fa-solid fa-graduation-cap"></i> Long-Term (Career progression)</h4>
+                                <ul class="roadmap-list" id="roadmap-long"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-actions">
+                        <button id="restart-btn" class="btn primary-btn btn-glow">
+                            <i class="fa-solid fa-rotate-left"></i> <span>Start New Interview</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loader-content">
+                <div class="spinner"></div>
+                <h4 id="loading-text">Processing...</h4>
+            </div>
+        </div>
+
+        <!-- Floating Enhanced Chatbot Widget -->
+        <div class="chatbot-container collapsed" id="chatbot-container">
+            <button class="chatbot-trigger" id="chatbot-trigger" title="Ask AI Assistant">
+                <i class="fa-solid fa-comments chat-open-icon"></i>
+                <i class="fa-solid fa-xmark chat-close-icon"></i>
+                <span class="badge ping-badge"></span>
+            </button>
+            <div class="chatbot-window">
+                <div class="chat-header">
+                    <div class="chat-bot-info">
+                        <div class="chat-avatar-mini">😊</div>
+                        <div>
+                            <h4>Aria Assistant</h4>
+                            <span class="online-indicator"><span class="pulse-dot"></span> Online &amp; Ready</span>
+                        </div>
+                    </div>
+                    <button class="chat-minimize-btn" id="chat-close-btn"><i class="fa-solid fa-minus"></i></button>
+                </div>
+
+                <div class="chat-suggestions" id="chat-suggestions">
+                    <span class="suggestions-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Quick Questions:</span>
+                    <div class="suggestion-chips-row">
+                        <button class="suggestion-pill" data-query="Give me campus placement interview tips for B.Tech">🎓 Campus Prep</button>
+                        <button class="suggestion-pill" data-query="How to answer 'Tell me about yourself' for freshers?">🙋 Self-Intro</button>
+                        <button class="suggestion-pill" data-query="How to explain my final year college project?">📦 Final Project</button>
+                        <button class="suggestion-pill" data-query="What are the four pillars of OOP?">⚡ OOPs Pillars</button>
+                        <button class="suggestion-pill" data-query="How does the End Interview button work?">🛑 End Interview</button>
+                        <button class="suggestion-pill" data-query="How is my technical score evaluated?">📊 Scoring</button>
+                        <button class="suggestion-pill" data-query="How does live proctoring work?">🛡️ Proctoring</button>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chatbot-messages">
+                    <div class="chat-bubble bot">
+                        <span class="bubble-speaker">Aria 😊</span>
+                        Namaste! I'm Aria, your AI Campus Placement Mentor. Ask me anything about preparing for 3rd &amp; 4th year B.Tech interviews, OOPs, DSA, explaining your college project, scoring, or ending your interview!
+                    </div>
+                </div>
+
+                <!-- Typing indicator -->
+                <div class="chat-typing-row hidden" id="chat-typing-indicator">
+                    <div class="typing-bubble">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="chatbot-input" placeholder="Ask Aria a question...">
+                    <button id="chatbot-send-btn" title="Send message"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+        </div><!-- /.portal-body -->
+    </div><!-- /.portal-root -->
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!--  PORTS & HTTPS URL SPACE MODAL                     -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <div class="endpoint-modal-overlay hidden" id="endpoint-space-modal">
+        <div class="endpoint-modal-container">
+            <!-- Modal Header -->
+            <div class="endpoint-modal-header">
+                <div class="modal-header-left">
+                    <div class="modal-badge-icon">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <div>
+                        <h3 class="modal-title">Ports, URLs &amp; HTTPS Endpoint Space</h3>
+                        <p class="modal-subtitle">Manage server ports, protocols, and inspect live REST API URLs</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="close-endpoint-modal-btn" title="Close modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="endpoint-modal-body">
+                <!-- Port & Protocol Configuration Card -->
+                <div class="endpoint-config-bar">
+                    <div class="config-group">
+                        <label><i class="fa-solid fa-shield-halved"></i> Protocol</label>
+                        <div class="protocol-toggle-group">
+                            <button class="proto-btn active" id="proto-http-btn" data-proto="http">HTTP</button>
+                            <button class="proto-btn" id="proto-https-btn" data-proto="https">HTTPS</button>
+                        </div>
+                    </div>
+
+                    <div class="config-group">
+                        <label><i class="fa-solid fa-globe"></i> Host Address</label>
+                        <div class="config-input-wrap">
+                            <input type="text" id="config-host-input" value="127.0.0.1" placeholder="127.0.0.1">
+                        </div>
+                    </div>
+
+                    <div class="config-group">
+                        <label><i class="fa-solid fa-plug"></i> Active Port</label>
+                        <div class="port-input-row">
+                            <input type="number" id="config-port-input" value="8000" min="1" max="65535" placeholder="8000">
+                            <div class="port-quick-chips">
+                                <button class="port-chip active" data-port="8000">8000</button>
+                                <button class="port-chip" data-port="3000">3000</button>
+                                <button class="port-chip" data-port="8080">8080</button>
+                                <button class="port-chip" data-port="5000">5000</button>
+                                <button class="port-chip port-chip-random" id="randomize-ports-btn" title="Randomize all navbar heading ports"><i class="fa-solid fa-dice"></i> Shuffle</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-group config-action-group">
+                        <label><i class="fa-solid fa-heart-pulse"></i> Live Server Ping</label>
+                        <div class="ping-controls-row">
+                            <button class="btn-ping-test" id="ping-server-btn">
+                                <i class="fa-solid fa-rotate"></i> Ping Health
+                            </button>
+                            <div class="ping-status-badge" id="ping-status-badge">
+                                <span class="ping-dot green"></span>
+                                <span id="ping-status-text">Ready to ping</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Base URL Banner -->
+                <div class="active-base-url-box">
+                    <div class="url-box-label">
+                        <i class="fa-solid fa-link"></i> Active Base Server URL:
+                    </div>
+                    <div class="url-box-content">
+                        <code id="display-base-url">http://127.0.0.1:8000</code>
+                        <button class="copy-url-btn" id="copy-base-url-btn" title="Copy Base URL">
+                            <i class="fa-regular fa-copy"></i>
+                            <span class="copy-feedback">Copied!</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section 1: Web Portal & Documentation Pages -->
+                <div class="endpoint-section">
+                    <h4 class="endpoint-section-title">
+                        <i class="fa-solid fa-browser"></i> Web Applications &amp; Documentation Pages
+                    </h4>
+                    <div class="endpoint-table-wrap">
+                        <table class="endpoint-table">
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Service / Route</th>
+                                    <th>Full Port &amp; Protocol URL</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="method-badge get">GET</span></td>
+                                    <td>
+                                        <div class="route-name">Assessment Portal</div>
+                                        <div class="route-path">/</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/">http://127.0.0.1:8000/</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                            <a href="/" target="_blank" class="table-open-btn" data-open-path="/" title="Open in new tab"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method-badge get">GET</span></td>
+                                    <td>
+                                        <div class="route-name">FastAPI Swagger UI</div>
+                                        <div class="route-path">/docs</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/docs">http://127.0.0.1:8000/docs</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/docs" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                            <a href="/docs" target="_blank" class="table-open-btn" data-open-path="/docs" title="Open in new tab"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method-badge get">GET</span></td>
+                                    <td>
+                                        <div class="route-name">ReDoc Documentation</div>
+                                        <div class="route-path">/redoc</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/redoc">http://127.0.0.1:8000/redoc</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/redoc" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                            <a href="/redoc" target="_blank" class="table-open-btn" data-open-path="/redoc" title="Open in new tab"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method-badge get">GET</span></td>
+                                    <td>
+                                        <div class="route-name">OpenAPI JSON Schema</div>
+                                        <div class="route-path">/openapi.json</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/openapi.json">http://127.0.0.1:8000/openapi.json</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/openapi.json" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                            <a href="/openapi.json" target="_blank" class="table-open-btn" data-open-path="/openapi.json" title="Open in new tab"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Section 2: REST API Endpoints -->
+                <div class="endpoint-section">
+                    <h4 class="endpoint-section-title">
+                        <i class="fa-solid fa-network-wired"></i> REST API v1 Services &amp; Endpoints
+                    </h4>
+                    <div class="endpoint-table-wrap">
+                        <table class="endpoint-table">
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>API Purpose</th>
+                                    <th>Full Port &amp; Protocol URL</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="method-badge get">GET</span></td>
+                                    <td>
+                                        <div class="route-name">Health &amp; Server Liveness</div>
+                                        <div class="route-path">/health</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/health">http://127.0.0.1:8000/health</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/health" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                            <a href="/health" target="_blank" class="table-open-btn" data-open-path="/health" title="Open in new tab"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method-badge post">POST</span></td>
+                                    <td>
+                                        <div class="route-name">Start Interview Session</div>
+                                        <div class="route-path">/api/v1/interview/start</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/api/v1/interview/start">http://127.0.0.1:8000/api/v1/interview/start</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/api/v1/interview/start" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method-badge post">POST</span></td>
+                                    <td>
+                                        <div class="route-name">Adaptive Fresher Questions</div>
+                                        <div class="route-path">/api/v1/interview/adaptive-questions</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/api/v1/interview/adaptive-questions">http://127.0.0.1:8000/api/v1/interview/adaptive-questions</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/api/v1/interview/adaptive-questions" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method-badge post">POST</span></td>
+                                    <td>
+                                        <div class="route-name">Submit Candidate Answer</div>
+                                        <div class="route-path">/api/v1/interview/submit-answer</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/api/v1/interview/submit-answer">http://127.0.0.1:8000/api/v1/interview/submit-answer</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/api/v1/interview/submit-answer" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method-badge post">POST</span></td>
+                                    <td>
+                                        <div class="route-name">Proctoring Telemetry Ping</div>
+                                        <div class="route-path">/api/v1/interview/proctor</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/api/v1/interview/proctor">http://127.0.0.1:8000/api/v1/interview/proctor</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/api/v1/interview/proctor" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method-badge post">POST</span></td>
+                                    <td>
+                                        <div class="route-name">Final Interview Evaluation</div>
+                                        <div class="route-path">/api/v1/interview/evaluate</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/api/v1/interview/evaluate">http://127.0.0.1:8000/api/v1/interview/evaluate</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/api/v1/interview/evaluate" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method-badge post">POST</span></td>
+                                    <td>
+                                        <div class="route-name">Aria Assistant Chatbot</div>
+                                        <div class="route-path">/api/v1/chat</div>
+                                    </td>
+                                    <td><code class="endpoint-full-url" data-path="/api/v1/chat">http://127.0.0.1:8000/api/v1/chat</code></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-copy-btn" data-copy-path="/api/v1/chat" title="Copy URL"><i class="fa-regular fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="endpoint-modal-footer">
+                <div class="footer-note">
+                    <i class="fa-solid fa-circle-info"></i> Server running on FastAPI ASGI. Protocol and port dynamically synchronize with your local environment.
+                </div>
+                <button class="btn-primary" id="save-endpoint-config-btn">
+                    <i class="fa-solid fa-check"></i> Apply Port Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!--  END INTERVIEW CONFIRMATION MODAL                  -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <div class="end-interview-modal-overlay hidden" id="end-interview-modal" role="dialog" aria-modal="true" aria-labelledby="end-modal-title">
+        <div class="end-interview-modal-card">
+            <div class="end-modal-header">
+                <div class="end-modal-icon-wrap">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="end-modal-title-box">
+                    <h3 class="end-modal-title" id="end-modal-title">End Interview Now?</h3>
+                    <p class="end-modal-subtitle">Conclude your session and generate Gemini assessment</p>
+                </div>
+                <button class="modal-close-btn" id="close-end-modal-btn" title="Close dialog">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="end-modal-body">
+                <div class="end-modal-callout">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div>
+                        <strong>Ready to view your results?</strong>
+                        <p>Ending the interview will stop your camera and live proctoring. All answers submitted so far will be evaluated by Gemini AI to produce your performance breakdown, technical metrics, and upskilling roadmap.</p>
+                    </div>
+                </div>
+                <p class="end-modal-warning-text" id="end-modal-warning-text">
+                    <i class="fa-solid fa-clock-rotate-left"></i> You can still answer the remaining questions if you prefer to continue.
+                </p>
+            </div>
+            <div class="end-modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-end-modal-btn">
+                    <i class="fa-solid fa-arrow-left"></i> Keep Interviewing
+                </button>
+                <button type="button" class="btn-danger-glow" id="confirm-end-modal-btn">
+                    <i class="fa-solid fa-phone-slash"></i> Yes, End &amp; View Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Logic -->
+    <script src="/static/app.js?v=2.5.0"></script>
+</body>
+</html>

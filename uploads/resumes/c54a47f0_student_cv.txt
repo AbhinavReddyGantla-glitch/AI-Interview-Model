@@ -1,0 +1,5 @@
+Candidate: Priya Sharma
+Email: priya@university.edu
+Skills: Python, Django, PostgreSQL, Docker
+Education: B.E. Computer Science
+Experience: Fresher software engineer.
